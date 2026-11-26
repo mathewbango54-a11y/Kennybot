@@ -5,7 +5,7 @@ import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 # ===== KENNY SETTINGS =====
-NTFY_TOPIC = "kennnybot"
+NTFY_TOPIC =  "kenny-mathew-bango-9f3x7q-2026"
 NTFY_URL = f"https://ntfy.sh/{NTFY_TOPIC}"
 
 def send_ntfy(msg):

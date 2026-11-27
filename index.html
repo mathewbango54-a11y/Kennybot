@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>KENNY 👑 GOLD ONLY V8 - SAFETY</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin:0;font-family:Arial;color:#fff;background:#000 url('https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?w=1200&q=80') center/cover fixed}
+.overlay{background:rgba(0,0,0,0.86);min-height:100vh;padding:12px}
+.card{background:rgba(20,20,20,0.93);border:2px solid #FFD700;border-radius:14px;padding:14px;margin-bottom:10px}
+.gold{color:#FFD700}.green{color:#00ff88}.red{color:#ff4444}.yellow{color:#ffcc00}
+button{background:#FFD700;color:#000;border:none;padding:13px;width:100%;border-radius:10px;font-weight:900;font-size:15px;margin-top:6px;cursor:pointer}
+button.small{background:#333;color:#fff;padding:8px;font-size:13px}
+input,select{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:none;box-sizing:border-box;background:#222;color:#fff}
+.sessionBox{padding:12px;border-radius:12px;text-align:center;font-weight:900;font-size:16px;margin-bottom:10px}
+.tradeLight{font-size:56px;text-align:center}
+.explain{background:#111;border-left:4px solid #FFD700;padding:10px;border-radius:8px;font-size:13px;line-height:1.6}
+.live{font-size:30px;font-weight:900}
+table{width:100%;font-size:13px;border-collapse:collapse}td,th{border:1px solid #333;padding:6px;text-align:center}
+</style>
+</head>
+<body>
+<div class="overlay">
+<h2 class="gold">KENNY 👑 GOLD ONLY V8 - SAFETY</h2>
+<p>🥇 XAU/USD - MECHANICAL SYSTEM - A+ SETUP ONLY</p>
+
+<div id="sessionBox" class="sessionBox">Checking Session...</div>
+
+<div class="card" style="border-color:#ff4444">
+<b>🚨 NEWS FILTER - HIGH IMPACT</b>
+<select id="news"><option value="NO">NO Major News Today - Safe</option><option value="YES">YES - NFP / CPI / FOMC Today - WAIT</option></select>
+<div class="explain">NFP = Jobs Friday 2:30pm SA | CPI = Inflation | FOMC = Fed Rates. If YES, V8 BLOCKS trade 30 min before/after news. Gold spikes and ignores technicals during news.</div>
+</div>
+
+<div class="card">
+<div class="live gold" id="price">Loading GOLD...</div>
+<p id="apis">Connecting to 2 GOLD APIs...</p>
+<p id="updated"></p>
+<button onclick="checkGold()">🔄 CHECK NOW</button>
+</div>
+
+<div class="card">
+<b>📅 YESTERDAY RANGE + H4 STRUCTURE</b>
+Y High <input id="yh" type="number" value="3685.39" onchange="calcRange()">
+Y Low <input id="yl" type="number" value="3557.68" onchange="calcRange()">
+H4 / Daily Trend <select id="h4"><option>DOWN</option><option>UP</option><option>SIDEWAYS</option></select>
+<div class="explain"><b>H4 Structure:</b> Check H4 - Lower Highs = DOWN, Higher Highs = UP. If H1 says BUY but H4 is DOWN, V8 says WAIT. Don't buy into multi-day downtrend.</div>
+<p id="range"></p><p id="zone"></p>
+</div>
+
+<div class="card">
+<b>📊 3 TIMEFRAMES + ADX + ATR + SPREAD</b>
+M15 <select id="m15"><option>BUY</option><option>SELL</option><option>WAIT</option></select>
+M30 <select id="m30"><option>BUY</option><option>SELL</option><option>WAIT</option></select>
+H1 <select id="h1"><option>BUY</option><option>SELL</option><option>WAIT</option></select>
+ADX (H1) <input id="adx" type="number" value="28">
+ATR (H1 - Volatility) <input id="atr" type="number" value="8" placeholder="e.g. 8 for Gold">
+Spread in MT5 ($) <input id="spread" type="number" value="0.30" step="0.01">
+<div class="explain"><b>ATR:</b> Gold ATR is ~$8. If ATR is $12, your Stop must be > $12 or noise stops you. V8 auto-adjusts Stop = ATR x 1.2 if ATR > 7.5.<br><b>Spread Cap:</b> If Spread > $0.50, V8 BLOCKS entry even in London.</div>
+<button onclick="getSignal()">🔍 KENNY CHECK + SIGNAL V8</button>
+<div id="tradeLight" class="tradeLight">⚪</div>
+<h3 id="signal" style="text-align:center">---</h3>
+<p id="plan" style="text-align:center"></p>
+<p id="rrDisplay" style="text-align:center"></p>
+<p id="strength" style="text-align:center"></p>
+<p id="v8note" style="text-align:center"></p>
+</div>
+
+<div class="card">
+<b>🧮 POSITION SIZE CALCULATOR - 1% RISK RULE</b>
+Balance R <input id="calcBal" type="number" value="200" oninput="calcLot()">
+Stop Distance ($) <input id="calcStop" type="number" value="7.5" oninput="calcLot()">
+<p id="lotResult"></p>
+<div class="explain"><b>1% Rule:</b> Risk only 1% per trade. R200 = R2 at 1%, but Kenny Max is R20 because balance is small. Calculator shows lot for R200 / R500 / R1000. Do NOT go above 0.03 Lot.</div>
+</div>
+
+<div class="card">
+<b>💰 ACCOUNT + LIVE PERFORMANCE LOG - LAST 20</b>
+Balance R <input id="bal" type="number" value="200" onchange="saveData()">
+Losses: <b id="lossCount">0/2</b> | Wins: <b id="winCount">0</b><br><br>
+<button onclick="doWin()">✅ I WON +R20</button>
+<button class="small" onclick="doLoss()">❌ I LOST -R20</button>
+<button class="small" onclick="resetDay()">🔄 Reset Day</button>
+<p id="journal"></p>
+<table><tr><th>Total</th><th>Win Rate</th><th>Avg R:R</th><th>Max Drawdown</th></tr><tr><td id="tTotal">0</td><td id="tWin">0%</td><td id="tRR">-</td><td id="tDD">R0</td></tr></table>
+<p id="perfNote"></p>
+</div>
+
+<script>
+let goldPrice=0;
+let bal=parseFloat(localStorage.getItem('kenny_bal')||200);
+let wins=parseInt(localStorage.getItem('kenny_wins')||0);
+let losses=parseInt(localStorage.getItem('kenny_losses')||0);
+let journal=JSON.parse(localStorage.getItem('kenny_journal')||'[]');
+document.getElementById('bal').value=bal;
+function saveData(){localStorage.setItem('kenny_bal',document.getElementById('bal').value);localStorage.setItem('kenny_wins',wins);localStorage.setItem('kenny_losses',losses);localStorage.setItem('kenny_journal',JSON.stringify(journal));updateAccount();}
+function updateAccount(){document.getElementById('lossCount').innerText=losses+'/2';document.getElementById('winCount').innerText=wins;document.getElementById('journal').innerText='Last: '+(journal.length?journal.slice(-5).join(' | '):'None yet');if(losses>=2)document.getElementById('journal').innerHTML+='<br><b class="red">⛔ STOP TODAY</b>';let tot=wins+losses;document.getElementById('tTotal').innerText=tot;document.getElementById('tWin').innerText=tot?Math.round(wins/tot*100)+'%':'0%';document.getElementById('tRR').innerText=tot?'1:2.0':'-';document.getElementById('tDD').innerText='R'+(losses*20);document.getElementById('perfNote').innerHTML=tot>=20?(wins/tot>=0.55?'<b class="green">✅ EDGE CONFIRMED - >55% over 20 trades</b>':'<b class="red">⚠️ NO EDGE - Win Rate <55% - Stop & Review</b>'):'Need 20 trades to confirm edge. Current: '+tot+'/20';}
+function doWin(){wins++;bal+=20;document.getElementById('bal').value=bal;journal.push('WIN +R20');saveData();alert('WIN! R'+bal);}
+function doLoss(){losses++;bal-=20;document.getElementById('bal').value=bal;journal.push('LOSS -R20');saveData();alert(losses>=2?'2 LOSSES - STOP TODAY R'+bal:'LOSS R'+bal);}
+function resetDay(){wins=0;losses=0;journal=[];saveData();alert('Day Reset');}
+function calcLot(){let b=parseFloat(document.getElementById('calcBal').value)||200;let s=parseFloat(document.getElementById('calcStop').value)||7.5;document.getElementById('lotResult').innerHTML='<b>Balance R'+b+' | Kenny Max Risk R20</b><br>For Stop $'+s+': Use <b>0.01 Lot</b> (minimum). For R500: 0.01 Lot. For R1000: 0.02 Lot. Max 0.03 Lot - Do NOT go above.';}
+function updateSession(){let h=new Date().getHours();let box=document.getElementById('sessionBox');if(h>=10&&h<14){box.style.background='#00ff88';box.style.color='#000';box.innerHTML='🟢 SESSION: LONDON (10am-2pm SA) - TRADE ALLOWED';}else if(h>=14&&h<22){box.style.background='#00ff88';box.style.color='#000';box.innerHTML='🟢 SESSION: NEW YORK (2pm-10pm SA) - TRADE ALLOWED';}else if(h>=3&&h<10){box.style.background='#ff4444';box.style.color='#fff';box.innerHTML='🔴 SESSION: ASIA (3am-10am SA) - NO TRADE';}else{box.style.background='#ff4444';box.style.color='#fff';box.innerHTML='🔴 SESSION: OFF HOURS (10pm-3am SA) - NO TRADE';}}
+function clean(p){p=parseFloat(p);if(!isFinite(p))return null;if(p<1000||p>10000)return null;return p;}
+function calcRange(){let yh=parseFloat(document.getElementById('yh').value)||0,yl=parseFloat(document.getElementById('yl').value)||0;if(!yh||!yl)return;let mid=(yh+yl)/2;document.getElementById('range').innerHTML='Range $'+(yh-yl).toFixed(2)+' | Res $'+yh+' | Sup $'+yl+' | Mid $'+mid.toFixed(2);if(goldPrice){let z='';if(goldPrice>yh-5)z='<b class="red">⚠️ AT RESISTANCE - WAIT FOR RETEST</b>';else if(goldPrice<yl+5)z='<b class="green">⚠️ AT / BELOW SUPPORT - WAIT FOR RETEST</b>';else z='<b class="green">✅ SAFE ZONE</b>';document.getElementById('zone').innerHTML=z;}}
+async function checkGold(){
+  let prices=[],logs=[];
+  document.getElementById('apis').innerHTML='Checking 2 GOLD APIs...';
+  try{let r=await fetch('https://xaus.com/api/v1/spot');let j=await r.json();let p=clean(j.spot_usd_oz||j.price);if(p){prices.push(p);logs.push('XAUS $'+p.toFixed(2));}}catch(e){logs.push('XAUS FAIL');}
+  try{let r=await fetch('https://biquote.io/api/latest?symbols=XAUUSD');let j=await r.json();let d=j.data?.XAUUSD||j.XAUUSD;let p=clean(d?.mid||d?.price);if(p){prices.push(p);logs.push('BiQuote $'+p.toFixed(2));}}catch(e){logs.push('BiQuote FAIL');}
+  if(prices.length>=2){goldPrice=(prices[0]+prices[1])/2;document.getElementById('price').innerHTML='CONFIRMED: $'+goldPrice.toFixed(2)+' ✅';document.getElementById('apis').innerHTML=logs.join(' | ')+' | 2/2 CONFIRMED - CLEAN';document.getElementById('updated').innerText='Updated: '+new Date().toLocaleTimeString();calcRange();}else{document.getElementById('price').innerHTML='WAIT - APIs Down';document.getElementById('apis').innerHTML=logs.join(' | ');}
+}
+function getSignal(){
+  if(losses>=2){document.getElementById('tradeLight').innerText='⛔';document.getElementById('signal').innerHTML='<span class="red">⛔ STOP TODAY - 2 LOSSES</span>';return;}
+  let h=new Date().getHours();let isOff=(h>=22||h<10);
+  let news=document.getElementById('news').value;
+  let a=[document.getElementById('m15').value,document.getElementById('m30').value,document.getElementById('h1').value];
+  let buys=a.filter(x=>x=='BUY').length,sells=a.filter(x=>x=='SELL').length;
+  let adx=parseFloat(document.getElementById('adx').value)||0;
+  let atr=parseFloat(document.getElementById('atr').value)||8;
+  let spread=parseFloat(document.getElementById('spread').value)||0.3;
+  let h4=document.getElementById('h4').value;
+  let s=document.getElementById('signal'),p=document.getElementById('plan'),st=document.getElementById('strength'),light=document.getElementById('tradeLight'),note=document.getElementById('v8note'),rr=document.getElementById('rrDisplay');
+  if(!goldPrice){light.innerText='⚪';s.innerHTML='<span class="yellow">Press CHECK first!</span>';return;}
+  if(news=='YES'){light.innerText='🚨';s.innerHTML='<span class="red">🚨 NEWS BLOCK - NO TRADE</span>';p.innerHTML='High Impact News - WAIT 30 min before/after NFP/CPI/FOMC';rr.innerHTML='';return;}
+  if(isOff){light.innerText='🔴';s.innerHTML='<span class="red">🔴 SESSION BLOCK - NO TRADE</span>';p.innerHTML='Session RED. Wait for London 10am SA.';return;}
+  if(spread>0.50){light.innerText='🟡';s.innerHTML='<span class="yellow">🟡 SPREAD BLOCK - NO TRADE</span>';p.innerHTML='Spread $'+spread+' > $0.50 cap. WAIT for spread to drop.';return;}
+  if(adx<25){light.innerText='🟡';s.innerHTML='<span class="yellow">🟡 WAIT - ADX '+adx+' <25 CHOPPY</span>';p.innerHTML='Trend too weak.';return;}
+  let baseStop=7.5, baseTarget=15;
+  let adjStop=atr>7.5?parseFloat((atr*1.2).toFixed(2)):baseStop;
+  let adjTarget=parseFloat((adjStop*2).toFixed(2));
+  if(buys>=3){
+    if(h4!='UP'){light.innerText='🟡';s.innerHTML='<span class="yellow">🟡 WAIT - H4 CONFLICT</span>';p.innerHTML='H1 BUY but H4 is '+h4+' - Don\'t buy into downtrend.';return;}
+    light.innerText='🟢';s.innerHTML='<span class="green">🟢 A+ SETUP - BUY CONFIRMED</span>';p.innerHTML='<b>Entry $'+goldPrice.toFixed(2)+' | SL $'+(goldPrice-adjStop).toFixed(2)+' | TP $'+(goldPrice+adjTarget).toFixed(2)+'</b><br>Stop $'+adjStop+' | Target $'+adjTarget+' | Risk R20 | Close 50% at $'+(goldPrice+adjStop).toFixed(2)+' | Move SL to Entry at halfway';rr.innerHTML='<b>R:R = 1:2.0 ✅ VALID</b>';st.innerHTML='Standard Risk | 3/3 + ADX Strong + H4 UP';note.innerHTML='✅ V8 PASSED ALL FILTERS';
+  }
+  else if(sells>=3){
+    if(h4!='DOWN'){light.innerText='🟡';s.innerHTML='<span class="yellow">🟡 WAIT - H4 CONFLICT</span>';p.innerHTML='H1 SELL but H4 is '+h4+' - Don\'t sell into uptrend.';return;}
+    light.innerText='🔴';s.innerHTML='<span class="red">🔴 A+ SETUP - SELL CONFIRMED</span>';p.innerHTML='<b>Entry $'+goldPrice.toFixed(2)+' | SL $'+(goldPrice+adjStop).toFixed(2)+' | TP $'+(goldPrice-adjTarget).toFixed(2)+'</b><br>Stop $'+adjStop+' | Target $'+adjTarget+' | Risk R20 | Close 50% at $'+(goldPrice-adjStop).toFixed(2)+' | Move SL to Entry at halfway';rr.innerHTML='<b>R:R = 1:2.0 ✅ VALID</b>';st.innerHTML='Standard Risk | 3/3 + ADX Strong + H4 DOWN';note.innerHTML='✅ V8 PASSED ALL FILTERS';
+  }
+  else{light.innerText='🟡';s.innerHTML='<span class="yellow">🟡 WAIT - STANDARD RISK - NO TRADE</span>';p.innerHTML='Need 3/3. 2/3 = WAIT for Retest.';rr.innerHTML='R:R = - - INVALID';}
+}
+calcLot();updateSession();updateAccount();calcRange();checkGold();
+setInterval(checkGold,30000);setInterval(updateSession,60000);
+</script>
+</div>
+</body>
+</html>
